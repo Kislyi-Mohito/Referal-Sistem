@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Session Example</title>
+</head>
+<body>
+    {% if my_value %}
+        <h1>Session Value: {{ my_value }}</h1>
+    {% else %}
+        <h1>No session value set.</h1>
+    {% endif %}
+    <a href="{% url 'set_session' %}">Set Session Value</a>
+</body>
+</html>
