@@ -9,21 +9,21 @@
 <form method="post">
         {% csrf_token %}
 
-        <h3>АВТОРИЗАЦИЯ</h3>
+        <h3>Вы авторизованны</h3>
         <h3>'добавить поле подсказки пароля'</h3>
         <h1>{{text}}</h1>
 
-        <h1>Логин</h1>
-        <input name="login" type="text">
+<!--        <h1>Логин</h1>-->
+<!--        <input name="login" type="text">-->
 
-        <h1>Пароль</h1>
-        <input name="password" type="text">
+<!--        <h1>Пароль</h1>-->
+<!--        <input name="password" type="text">-->
 
-        <h1>инвайт код</h1>
-        <input name="invait" type="text">
+<!--        <h1>инвайт код</h1>-->
+<!--        <input name="invait" type="text">-->
 
         <button name="send" value="send" type="submit">Авторизоваться</button>
-        <button name="logout" value="ok" type="submit">d=Выйти</button>
+        <button name="logout" value="ok" type="submit">Выйти</button>
 </form>
 
 </body>

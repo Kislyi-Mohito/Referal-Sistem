@@ -64,27 +64,53 @@ def get_session(request):
 
     return render(request, 'session_template.html', {'my_value': my_value})
 
+'''я хочу чтоб он проверял значение логина со зночение в таблице Users'''
 
-def login(request):
+
+def login(request):                                             #настройка авторизаци
 
     login = request.POST.get('login')
     password = request.POST.get('password')
+    button = request.POST.get('send')
     data = {'text':''}
 
-    with connection.cursor() as cursor:
-        cursor.execute(f'SELECT * FROM Users WHERE name = '{login}';')
-        rows = cursor.fetchall()
+    if login == '1':
+        request.session['auth'] = '1'
+        return redirect('home')
+    else:
+        request.session['auth'] = '0'
 
-        data = {'text':rows}
-    #
-    # if login == '1':
-    #     request.session['auth'] = '1'
-    #     return redirect('home')
-    # else:
-    #     request.session['auth'] = '0'
-    #     if login != '':
-    #
-    #         data = {'text': f'{login} не авторизованны'}
+        if login != '':
+            data = {'text': f'{login} не авторизованны'}
+
+
+'''БЛОК ПОИСКА ЛОГИНА И ПАРОЛЯ'''
+    #произвожу поиск по логину в БД
+    with connection.cursor() as cursor:
+        if button == 'send':
+            cursor.execute(f"SELECT name FROM Users WHERE name = '{login}';")
+            rows = cursor.fetchall()
+            name = ""           #в эту переменную я запишу найденное имя чтоб можно было вывести
+
+            for row in rows:
+                name = str(row)
+
+                name = name[2:-3]       # тут я получаю уже иямя без скобок с которым можно работать
+
+
+
+'''БЛОК ПРОВЕРКИ ЛОГИНА И ПАРОЛЯ'''
+            #тут я ввожу проверку на пустую строку и есть ли логин
+            if name != '' and password == '1':
+                request.session['auth'] = '1'           #тут должен быть реализован переход на страницу если логин и пароль подходят
+                return redirect('home')
+
+            # реализация подсказки для пароля
+            elif name != '':
+                data = {'text': f'{name} есть в списке, ваш парооль {1}'}
+            else:
+
+                data = {'text': f'{login} вы не зарегестрированны'}
 
 
     return render(request, 'login.html', context=data)
