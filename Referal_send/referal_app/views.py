@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.db import connection
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from random import randint
+
 
 
 
@@ -94,16 +95,22 @@ def login(request):                                             #настрой�
             if bd:
                 bd = bd[0]
                 name = bd[1]     #не трогая оно работает
-                data = {'text': f'{name} есть в списке, ваш парооль {bd[4]}'}
+
+                # if login == bd[1] and password == bd[4]:
+
+                if f'{password}' == f'{bd[4].strip()}':
+                    request.session['auth'] = '1'  # тут должен быть реализован переход на страницу если логин и пароль подходят
+                    return redirect('home')
+                else:
+                    name = f'че то  не сходится {len(password)} - {len(bd[4].strip())}'
+                data = {'text': f'{bd[1]} есть в списке, ваш парооль {bd[4]}'}
             else:
                 name = ''
                 data = {'text': f'{login} вы не зарегестрированны'}
 
 
 
-            if name != '' and password == '1':
-                request.session['auth'] = '1'           #тут должен быть реализован переход на страницу если логин и пароль подходят
-                return redirect('home')
+
 
 
 
